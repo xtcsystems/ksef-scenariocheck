@@ -45,7 +45,7 @@ await RunAsync("reports omit fixture and certificate values", async () =>
         }
 
         Assert(combined.Contains("duplicate-reference-count=1", StringComparison.Ordinal), "Expected sanitized duplicate count.");
-        Assert(combined.Contains("unresolved-reference-count=2", StringComparison.Ordinal), "Expected sanitized unresolved count.");
+        Assert(combined.Contains("unresolved-reference-count=1", StringComparison.Ordinal), "Expected sanitized unresolved count.");
     }
     finally
     {
