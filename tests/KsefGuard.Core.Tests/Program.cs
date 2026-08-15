@@ -20,6 +20,39 @@ await RunAsync("findings pack returns every scenario type", async () =>
     Assert(report.Summary.NeedsReview > 0, "Expected a needs-review finding.");
 });
 
+await RunAsync("reports omit fixture and certificate values", async () =>
+{
+    var engine = new ValidationEngine();
+    var report = await engine.ValidateAsync(Path.Combine(AppContext.BaseDirectory, "examples", "scenario-packs", "findings"), DateTimeOffset.Parse("2026-08-15T00:00:00Z"));
+    var output = NewTemp();
+
+    try
+    {
+        await ReportWriters.WriteAsync(report, output);
+        var json = await File.ReadAllTextAsync(Path.Combine(output, "report.json"));
+        var html = await File.ReadAllTextAsync(Path.Combine(output, "report.html"));
+        var combined = json + html;
+
+        foreach (var prohibited in new[]
+                 {
+                     "REF-001",
+                     "REF-002",
+                     "KSeF Guard Synthetic",
+                     "https://qr.ksef.mf.gov.pl/invoice/"
+                 })
+        {
+            Assert(!combined.Contains(prohibited, StringComparison.Ordinal), $"Report leaked fixture/certificate value: {prohibited}");
+        }
+
+        Assert(combined.Contains("duplicate-reference-count=1", StringComparison.Ordinal), "Expected sanitized duplicate count.");
+        Assert(combined.Contains("unresolved-reference-count=2", StringComparison.Ordinal), "Expected sanitized unresolved count.");
+    }
+    finally
+    {
+        Directory.Delete(output, true);
+    }
+});
+
 await RunAsync("zip traversal is refused", async () =>
 {
     var temp = NewTemp();
@@ -45,7 +78,6 @@ await RunAsync("private key marker is refused", async () =>
     await AssertThrowsAsync<UnsafePackException>(() => loader.LoadAsync(temp));
     Directory.Delete(temp, true);
 });
-
 
 if (!OperatingSystem.IsWindows())
 {
