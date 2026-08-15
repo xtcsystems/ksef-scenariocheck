@@ -31,6 +31,10 @@ jobs:
           unzip -o /tmp/ksefguard.zip -d .
           rm -rf .bootstrap
           rm -f .github/workflows/bootstrap-probe.yml
+          # The workflow token may not create or update workflow files. The
+          # connected GitHub app will add the validated CI/release workflows
+          # after this source commit is pushed.
+          rm -f .github/workflows/ci.yml .github/workflows/release.yml
 
       - name: Set up .NET 10
         uses: actions/setup-dotnet@v4
