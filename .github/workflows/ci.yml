@@ -28,6 +28,9 @@ jobs:
             executable: ksefguard
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Configure Git line endings
+        shell: bash
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
