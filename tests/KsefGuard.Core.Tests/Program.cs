@@ -46,6 +46,29 @@ await RunAsync("private key marker is refused", async () =>
     Directory.Delete(temp, true);
 });
 
+
+if (!OperatingSystem.IsWindows())
+{
+    await RunAsync("symbolic-link directories are refused", async () =>
+    {
+        var temp = NewTemp();
+        var outside = NewTemp();
+        await File.WriteAllTextAsync(Path.Combine(outside, "outside.json"), "{}");
+        Directory.CreateSymbolicLink(Path.Combine(temp, "linked"), outside);
+
+        try
+        {
+            var loader = new ScenarioPackLoader();
+            await AssertThrowsAsync<UnsafePackException>(() => loader.LoadAsync(temp));
+        }
+        finally
+        {
+            Directory.Delete(temp, true);
+            Directory.Delete(outside, true);
+        }
+    });
+}
+
 if (failures.Count == 0)
 {
     Console.WriteLine("Core test harness passed.");

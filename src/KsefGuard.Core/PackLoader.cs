@@ -135,37 +135,66 @@ public sealed class ScenarioPackLoader
 
     private static async Task ValidateDirectorySafetyAsync(string rootPath, CancellationToken cancellationToken)
     {
-        var rootPrefix = Path.GetFullPath(rootPath) + Path.DirectorySeparatorChar;
-        var files = Directory.EnumerateFiles(rootPath, "*", SearchOption.AllDirectories).ToArray();
-
-        if (files.Length > MaximumEntries)
+        var normalizedRoot = Path.GetFullPath(rootPath);
+        var rootAttributes = File.GetAttributes(normalizedRoot);
+        if ((rootAttributes & FileAttributes.ReparsePoint) != 0)
         {
-            throw new UnsafePackException($"Scenario pack has more than {MaximumEntries} files.");
+            throw new UnsafePackException("The scenario-pack root cannot be a symbolic link or reparse point.");
+        }
+
+        var rootPrefix = normalizedRoot + Path.DirectorySeparatorChar;
+        var pendingDirectories = new Stack<string>();
+        var files = new List<string>();
+        pendingDirectories.Push(normalizedRoot);
+
+        var entryCount = 0;
+        while (pendingDirectories.Count > 0)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var directory = pendingDirectories.Pop();
+
+            foreach (var entry in Directory.EnumerateFileSystemEntries(directory))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                entryCount++;
+                if (entryCount > MaximumEntries)
+                {
+                    throw new UnsafePackException($"Scenario pack has more than {MaximumEntries} entries.");
+                }
+
+                var fullPath = Path.GetFullPath(entry);
+                if (!fullPath.StartsWith(rootPrefix, PathComparison))
+                {
+                    throw new UnsafePackException($"Entry escapes the scenario-pack root: {entry}");
+                }
+
+                var attributes = File.GetAttributes(fullPath);
+                if ((attributes & FileAttributes.ReparsePoint) != 0)
+                {
+                    throw new UnsafePackException($"Symbolic links/reparse points are not allowed: {Path.GetRelativePath(normalizedRoot, fullPath)}");
+                }
+
+                if ((attributes & FileAttributes.Directory) != 0)
+                {
+                    pendingDirectories.Push(fullPath);
+                    continue;
+                }
+
+                files.Add(fullPath);
+            }
         }
 
         long totalBytes = 0;
-        foreach (var file in files)
+        foreach (var fullPath in files)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var fullPath = Path.GetFullPath(file);
-            if (!fullPath.StartsWith(rootPrefix, PathComparison))
-            {
-                throw new UnsafePackException($"File escapes the scenario-pack root: {file}");
-            }
-
-            var attributes = File.GetAttributes(fullPath);
-            if ((attributes & FileAttributes.ReparsePoint) != 0)
-            {
-                throw new UnsafePackException($"Symbolic links/reparse points are not allowed: {file}");
-            }
-
             ValidateExtension(fullPath);
 
             var info = new FileInfo(fullPath);
             if (info.Length > MaximumSingleFileBytes)
             {
-                throw new UnsafePackException($"File is too large: {file}");
+                throw new UnsafePackException($"File is too large: {Path.GetRelativePath(normalizedRoot, fullPath)}");
             }
 
             totalBytes = checked(totalBytes + info.Length);
@@ -179,7 +208,7 @@ public sealed class ScenarioPackLoader
                 var text = await File.ReadAllTextAsync(fullPath, Encoding.UTF8, cancellationToken).ConfigureAwait(false);
                 if (PrivateKeyMarkers.Any(marker => text.Contains(marker, StringComparison.Ordinal)))
                 {
-                    throw new UnsafePackException($"Private-key material is prohibited: {Path.GetRelativePath(rootPath, fullPath)}");
+                    throw new UnsafePackException($"Private-key material is prohibited: {Path.GetRelativePath(normalizedRoot, fullPath)}");
                 }
             }
         }
@@ -248,7 +277,7 @@ public sealed class ScenarioPackLoader
 
         if (manifest.Scenarios.Count > 5)
         {
-            throw new PackValidationException("The public probe supports no more than five scenarios per pack.");
+            throw new PackValidationException("the public probe supports no more than five scenarios per pack.");
         }
 
         var duplicateId = manifest.Scenarios
@@ -263,7 +292,7 @@ public sealed class ScenarioPackLoader
         {
             if (string.IsNullOrWhiteSpace(scenario.Id) || string.IsNullOrWhiteSpace(scenario.Type))
             {
-                throw new PackValidationException("Every scenario requires id and type.");
+                throw new PackValidationException($"Every scenario requires id and type.");
             }
 
             if (!ScenarioCatalog.IsSupported(scenario.Type))
@@ -271,8 +300,8 @@ public sealed class ScenarioPackLoader
                 throw new PackValidationException($"Unsupported scenario type: {scenario.Type}");
             }
 
-            ValidateReferencedFile(rootPath, scenario.Fixture, $"fixture for {scenario.Id}");
-            ValidateReferencedFile(rootPath, scenario.Expected, $"expected data for {scenario.Id}");
+            ValidateReferencedFile(rootPath, scenario.Fixture, $"{fixture for {scenario.Id}");
+            ValidateReferencedFile(rootPath, scenario.Expected, $"{expected data for {scenario.Id}");
         }
     }
 
