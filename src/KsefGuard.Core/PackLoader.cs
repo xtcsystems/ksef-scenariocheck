@@ -277,7 +277,7 @@ public sealed class ScenarioPackLoader
 
         if (manifest.Scenarios.Count > 5)
         {
-            throw new PackValidationException("the public probe supports no more than five scenarios per pack.");
+            throw new PackValidationException("The public probe supports no more than five scenarios per pack.");
         }
 
         var duplicateId = manifest.Scenarios
@@ -292,7 +292,7 @@ public sealed class ScenarioPackLoader
         {
             if (string.IsNullOrWhiteSpace(scenario.Id) || string.IsNullOrWhiteSpace(scenario.Type))
             {
-                throw new PackValidationException($"Every scenario requires id and type.");
+                throw new PackValidationException("Every scenario requires id and type.");
             }
 
             if (!ScenarioCatalog.IsSupported(scenario.Type))
@@ -300,8 +300,8 @@ public sealed class ScenarioPackLoader
                 throw new PackValidationException($"Unsupported scenario type: {scenario.Type}");
             }
 
-            ValidateReferencedFile(rootPath, scenario.Fixture, $"{fixture for {scenario.Id}");
-            ValidateReferencedFile(rootPath, scenario.Expected, $"{expected data for {scenario.Id}");
+            ValidateReferencedFile(rootPath, scenario.Fixture, $"fixture for {scenario.Id}");
+            ValidateReferencedFile(rootPath, scenario.Expected, $"expected data for {scenario.Id}");
         }
     }
 
