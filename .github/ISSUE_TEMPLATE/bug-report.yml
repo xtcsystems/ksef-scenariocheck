@@ -1,0 +1,40 @@
+name: Reproducible defect
+about: Report a reproducible KSeF Guard defect using synthetic or sanitized data
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not submit invoices, NIPs, credentials, certificates, private keys, tokens, customer files, or production payloads.
+  - type: input
+    id: version
+    attributes:
+      label: KSeF Guard version
+    validations:
+      required: true
+  - type: dropdown
+    id: scenario
+    attributes:
+      label: Scenario type
+      options:
+        - certificate-metadata
+        - qr-verification-link
+        - offline24-timeline
+        - retry-recovery-sequence
+        - unresolved-status
+        - pack/CLI/reporting
+    validations:
+      required: true
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Actual use case and impact
+      description: Explain what you were trying to validate and the consequence of the defect.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction with synthetic data
+    validations:
+      required: true

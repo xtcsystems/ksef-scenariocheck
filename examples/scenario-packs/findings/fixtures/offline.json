@@ -1,0 +1,12 @@
+{
+  "events": [
+    {
+      "type": "issued-offline",
+      "at": "2026-08-15T08:00:00Z"
+    },
+    {
+      "type": "submitted",
+      "at": "2026-08-17T12:00:00Z"
+    }
+  ]
+}

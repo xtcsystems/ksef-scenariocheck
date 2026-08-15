@@ -1,0 +1,7 @@
+{
+  "terminalStatuses": [
+    "accepted",
+    "rejected",
+    "cancelled"
+  ]
+}

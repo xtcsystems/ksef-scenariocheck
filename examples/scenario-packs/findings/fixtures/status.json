@@ -1,0 +1,16 @@
+{
+  "records": [
+    {
+      "reference": "REF-001",
+      "status": "accepted"
+    },
+    {
+      "reference": "REF-001",
+      "status": "rejected"
+    },
+    {
+      "reference": "REF-002",
+      "status": "pending"
+    }
+  ]
+}

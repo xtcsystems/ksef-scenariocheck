@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>KsefGuard.Cli.Tests</AssemblyName>
+    <RootNamespace>KsefGuard.Cli.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/KsefGuard.Cli/KsefGuard.Cli.csproj" />
+  </ItemGroup>
+</Project>

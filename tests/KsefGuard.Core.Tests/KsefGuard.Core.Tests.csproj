@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>KsefGuard.Core.Tests</AssemblyName>
+    <RootNamespace>KsefGuard.Core.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/KsefGuard.Core/KsefGuard.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../examples/scenario-packs/**" Link="examples/scenario-packs/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

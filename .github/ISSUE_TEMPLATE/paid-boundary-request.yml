@@ -1,0 +1,44 @@
+name: Organization / paid-boundary request
+about: Request a capability inside the predeclared advanced CI, private-fixture, team, or evidence boundary
+labels: [paid-boundary]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is not a purchase commitment. It helps test whether the declared paid boundary maps to real use. Do not include sensitive data.
+  - type: input
+    id: version
+    attributes:
+      label: Version already used
+    validations:
+      required: true
+  - type: dropdown
+    id: capability
+    attributes:
+      label: Capability required
+      options:
+        - Maintained advanced scenario packs
+        - Batch/CI gating across profiles
+        - Private organization fixtures
+        - Version compatibility matrix/change notifications
+        - Premium/signed evidence reports
+        - Team/organization controls
+        - Commercial licensing or bounded support
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Actual workflow, frequency, consequence, and current workaround
+    validations:
+      required: true
+  - type: dropdown
+    id: buyer
+    attributes:
+      label: Would this be needed for personal, team, or commercial organization use?
+      options:
+        - Personal
+        - Team
+        - Commercial organization
+    validations:
+      required: true

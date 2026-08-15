@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "ksefguard-all-pass",
+  "version": "1.0.0",
+  "title": {
+    "en": "All-pass synthetic KSeF Guard examples",
+    "pl": "Syntetyczne przykłady KSeF Guard bez błędów"
+  },
+  "sourceReferences": [
+    {
+      "title": "KSeF 2.0 API and integration material",
+      "url": "https://github.com/CIRFMF/ksef-api"
+    },
+    {
+      "title": "KSeF certificates",
+      "url": "https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/"
+    },
+    {
+      "title": "KSeF offline24",
+      "url": "https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/tryb-offline24/"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "certificate-pass",
+      "type": "certificate-metadata",
+      "fixture": "fixtures/certificate.json",
+      "expected": "expected/certificate.json"
+    },
+    {
+      "id": "qr-pass",
+      "type": "qr-verification-link",
+      "fixture": "fixtures/qr.json",
+      "expected": "expected/qr.json"
+    },
+    {
+      "id": "offline-pass",
+      "type": "offline24-timeline",
+      "fixture": "fixtures/offline.json",
+      "expected": "expected/offline.json"
+    },
+    {
+      "id": "retry-pass",
+      "type": "retry-recovery-sequence",
+      "fixture": "fixtures/retry.json",
+      "expected": "expected/retry.json"
+    },
+    {
+      "id": "status-pass",
+      "type": "unresolved-status",
+      "fixture": "fixtures/status.json",
+      "expected": "expected/status.json"
+    }
+  ]
+}

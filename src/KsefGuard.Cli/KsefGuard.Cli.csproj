@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>ksefguard</AssemblyName>
+    <RootNamespace>KsefGuard.Cli</RootNamespace>
+    <Version>0.1.0-probe.1</Version>
+    <Description>Local deterministic KSeF 2.0 special-mode fixture and regression checks.</Description>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../KsefGuard.Core/KsefGuard.Core.csproj" />
+  </ItemGroup>
+</Project>

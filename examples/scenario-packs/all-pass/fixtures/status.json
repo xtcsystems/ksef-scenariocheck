@@ -1,0 +1,12 @@
+{
+  "records": [
+    {
+      "reference": "REF-001",
+      "status": "accepted"
+    },
+    {
+      "reference": "REF-002",
+      "status": "rejected"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "maxAttempts": 3,
+  "requiredTerminalOutcome": "accepted",
+  "allowedIntermediateOutcomes": [
+    "transient-failure",
+    "rate-limited"
+  ]
+}

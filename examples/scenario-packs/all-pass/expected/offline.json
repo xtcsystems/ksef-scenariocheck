@@ -1,0 +1,7 @@
+{
+  "requiredSequence": [
+    "issued-offline",
+    "submitted"
+  ],
+  "maxElapsedMinutes": 1440
+}

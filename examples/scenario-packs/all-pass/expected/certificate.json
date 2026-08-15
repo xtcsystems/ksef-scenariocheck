@@ -1,0 +1,6 @@
+{
+  "subjectContains": "CN=KSeF Guard Synthetic",
+  "issuerContains": "CN=KSeF Guard Synthetic",
+  "validAt": "2027-01-01T00:00:00Z",
+  "sha256Thumbprint": "D1E198F9CEA2FD467D1DB78DD65C20EE3FC316A55FB3FF74B04B613FA525449B"
+}

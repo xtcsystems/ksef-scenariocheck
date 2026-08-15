@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>KsefGuard.Core</AssemblyName>
+    <RootNamespace>KsefGuard</RootNamespace>
+    <Description>Core scenario-pack and validation engine for KSeF Guard.</Description>
+  </PropertyGroup>
+</Project>

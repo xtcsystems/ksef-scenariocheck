@@ -1,0 +1,36 @@
+name: Real-use feedback
+about: Share bounded feedback after using KSeF Guard in a real implementation workflow
+labels: [feedback]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form is for evidence from actual use. Do not include sensitive or customer data.
+  - type: input
+    id: version
+    attributes:
+      label: Version used
+    validations:
+      required: true
+  - type: dropdown
+    id: org
+    attributes:
+      label: Organization type (optional)
+      options:
+        - ERP/accounting software vendor
+        - KSeF integration consultancy
+        - Internal product/finance-platform team
+        - Independent developer
+        - Other / prefer not to say
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Actual workflow, frequency, impact, and previous workaround
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: What happened after using the tool?
+    validations:
+      required: true
