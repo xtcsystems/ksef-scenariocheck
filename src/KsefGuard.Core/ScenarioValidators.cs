@@ -95,7 +95,7 @@ internal sealed class CertificateMetadataValidator : ScenarioValidatorBase
         }
         catch (Exception exception) when (exception is FormatException or CryptographicException)
         {
-            return [Fail("KG-CERT-001", scenario, "Certificate data could not be parsed.", "Nie można odczytać danych certyfikatu.", relativePath, exception.Message)];
+            return [Fail("KG-CERT-001", scenario, "Certificate data could not be parsed.", "Nie można odczytać danych certyfikatu.", relativePath)];
         }
 
         using (certificate)
@@ -105,12 +105,12 @@ internal sealed class CertificateMetadataValidator : ScenarioValidatorBase
             var subjectContains = GetRequiredString(expected.RootElement, "subjectContains");
             findings.Add(certificate.Subject.Contains(subjectContains, StringComparison.OrdinalIgnoreCase)
                 ? Pass("KG-CERT-002", scenario, "Certificate subject matches the fixture expectation.", "Podmiot certyfikatu odpowiada oczekiwaniu fixture.", relativePath)
-                : Fail("KG-CERT-002", scenario, "Certificate subject does not match the fixture expectation.", "Podmiot certyfikatu nie odpowiada oczekiwaniu fixture.", relativePath, certificate.Subject));
+                : Fail("KG-CERT-002", scenario, "Certificate subject does not match the fixture expectation.", "Podmiot certyfikatu nie odpowiada oczekiwaniu fixture.", relativePath));
 
             var issuerContains = GetRequiredString(expected.RootElement, "issuerContains");
             findings.Add(certificate.Issuer.Contains(issuerContains, StringComparison.OrdinalIgnoreCase)
                 ? Pass("KG-CERT-003", scenario, "Certificate issuer matches the fixture expectation.", "Wystawca certyfikatu odpowiada oczekiwaniu fixture.", relativePath)
-                : Fail("KG-CERT-003", scenario, "Certificate issuer does not match the fixture expectation.", "Wystawca certyfikatu nie odpowiada oczekiwaniu fixture.", relativePath, certificate.Issuer));
+                : Fail("KG-CERT-003", scenario, "Certificate issuer does not match the fixture expectation.", "Wystawca certyfikatu nie odpowiada oczekiwaniu fixture.", relativePath));
 
             var validAt = DateTimeOffset.Parse(GetRequiredString(expected.RootElement, "validAt"), System.Globalization.CultureInfo.InvariantCulture);
             var notBefore = new DateTimeOffset(certificate.NotBefore).ToUniversalTime();
@@ -118,13 +118,13 @@ internal sealed class CertificateMetadataValidator : ScenarioValidatorBase
             var valid = validAt >= notBefore && validAt <= notAfter;
             findings.Add(valid
                 ? Pass("KG-CERT-004", scenario, "Certificate covers the pack-declared evaluation time.", "Certyfikat obejmuje czas oceny zadeklarowany w pakiecie.", relativePath)
-                : Fail("KG-CERT-004", scenario, "Certificate does not cover the pack-declared evaluation time.", "Certyfikat nie obejmuje czasu oceny zadeklarowanego w pakiecie.", relativePath, validAt.ToString("O")));
+                : Fail("KG-CERT-004", scenario, "Certificate does not cover the pack-declared evaluation time.", "Certyfikat nie obejmuje czasu oceny zadeklarowanego w pakiecie.", relativePath));
 
             var expectedThumbprint = NormalizeHex(GetRequiredString(expected.RootElement, "sha256Thumbprint"));
             var actualThumbprint = NormalizeHex(certificate.GetCertHashString(HashAlgorithmName.SHA256));
             findings.Add(string.Equals(actualThumbprint, expectedThumbprint, StringComparison.Ordinal)
                 ? Pass("KG-CERT-005", scenario, "Certificate SHA-256 thumbprint matches.", "Odcisk SHA-256 certyfikatu jest zgodny.", relativePath)
-                : Fail("KG-CERT-005", scenario, "Certificate SHA-256 thumbprint does not match.", "Odcisk SHA-256 certyfikatu nie jest zgodny.", relativePath, actualThumbprint));
+                : Fail("KG-CERT-005", scenario, "Certificate SHA-256 thumbprint does not match.", "Odcisk SHA-256 certyfikatu nie jest zgodny.", relativePath));
         }
 
         return findings;
@@ -152,10 +152,10 @@ internal sealed class QrVerificationLinkValidator : ScenarioValidatorBase
         [
             string.Equals(calculatedHash, declaredHash, StringComparison.Ordinal)
                 ? Pass("KG-QR-001", scenario, "Declared synthetic hash matches the calculated SHA-256 value.", "Zadeklarowany syntetyczny skrót odpowiada obliczonej wartości SHA-256.", scenario.Fixture)
-                : Fail("KG-QR-001", scenario, "Declared synthetic hash does not match the calculated SHA-256 value.", "Zadeklarowany syntetyczny skrót nie odpowiada obliczonej wartości SHA-256.", scenario.Fixture, calculatedHash),
+                : Fail("KG-QR-001", scenario, "Declared synthetic hash does not match the calculated SHA-256 value.", "Zadeklarowany syntetyczny skrót nie odpowiada obliczonej wartości SHA-256.", scenario.Fixture),
             string.Equals(expectedLink, declaredLink, StringComparison.Ordinal)
                 ? Pass("KG-QR-002", scenario, "Declared verification link matches the explicit pack rule.", "Zadeklarowany link weryfikacyjny odpowiada jawnej regule pakietu.", scenario.Fixture)
-                : Fail("KG-QR-002", scenario, "Declared verification link does not match the explicit pack rule.", "Zadeklarowany link weryfikacyjny nie odpowiada jawnej regule pakietu.", scenario.Fixture, expectedLink)
+                : Fail("KG-QR-002", scenario, "Declared verification link does not match the explicit pack rule.", "Zadeklarowany link weryfikacyjny nie odpowiada jawnej regule pakietu.", scenario.Fixture)
         ];
     }
 }
@@ -184,13 +184,13 @@ internal sealed class OfflineTimelineValidator : ScenarioValidatorBase
         [
             sequenceMatches
                 ? Pass("KG-OFFLINE-001", scenario, "Event sequence matches the explicit scenario-pack expectation.", "Sekwencja zdarzeń odpowiada jawnemu oczekiwaniu pakietu scenariuszy.", scenario.Fixture)
-                : Fail("KG-OFFLINE-001", scenario, "Event sequence does not match the explicit scenario-pack expectation.", "Sekwencja zdarzeń nie odpowiada jawnemu oczekiwaniu pakietu scenariuszy.", scenario.Fixture, string.Join(" -> ", actualTypes)),
+                : Fail("KG-OFFLINE-001", scenario, "Event sequence does not match the explicit scenario-pack expectation.", "Sekwencja zdarzeń nie odpowiada jawnemu oczekiwaniu pakietu scenariuszy.", scenario.Fixture, $"event-count={actualTypes.Length}"),
             chronological
                 ? Pass("KG-OFFLINE-002", scenario, "Event timestamps are chronological.", "Znaczniki czasu zdarzeń są chronologiczne.", scenario.Fixture)
                 : Fail("KG-OFFLINE-002", scenario, "Event timestamps are not chronological.", "Znaczniki czasu zdarzeń nie są chronologiczne.", scenario.Fixture),
             withinWindow
                 ? Pass("KG-OFFLINE-003", scenario, "Elapsed time is inside the pack-declared window.", "Czas mieści się w oknie zadeklarowanym w pakiecie.", scenario.Fixture)
-                : Fail("KG-OFFLINE-003", scenario, "Elapsed time exceeds the pack-declared window.", "Czas przekracza okno zadeklarowane w pakiecie.", scenario.Fixture, elapsed.ToString())
+                : Fail("KG-OFFLINE-003", scenario, "Elapsed time exceeds the pack-declared window.", "Czas przekracza okno zadeklarowane w pakiecie.", scenario.Fixture, $"elapsed-minutes={elapsed.TotalMinutes:F0}")
         ];
     }
 
@@ -216,13 +216,13 @@ internal sealed class RetryRecoveryValidator : ScenarioValidatorBase
         [
             attemptsWithinLimit
                 ? Pass("KG-RETRY-001", scenario, "Retry sequence is inside the declared attempt limit.", "Sekwencja prób mieści się w zadeklarowanym limicie.", scenario.Fixture)
-                : Fail("KG-RETRY-001", scenario, "Retry sequence exceeds the declared attempt limit.", "Sekwencja prób przekracza zadeklarowany limit.", scenario.Fixture, outcomes.Count.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                : Fail("KG-RETRY-001", scenario, "Retry sequence exceeds the declared attempt limit.", "Sekwencja prób przekracza zadeklarowany limit.", scenario.Fixture, $"attempt-count={outcomes.Count}"),
             intermediateAllowed
                 ? Pass("KG-RETRY-002", scenario, "Intermediate outcomes are allowed by the pack.", "Wyniki pośrednie są dozwolone przez pakiet.", scenario.Fixture)
                 : Fail("KG-RETRY-002", scenario, "One or more intermediate outcomes are not allowed by the pack.", "Co najmniej jeden wynik pośredni nie jest dozwolony przez pakiet.", scenario.Fixture),
             hasTerminal
                 ? Pass("KG-RETRY-003", scenario, "Sequence reaches the required terminal outcome.", "Sekwencja osiąga wymagany wynik końcowy.", scenario.Fixture)
-                : Fail("KG-RETRY-003", scenario, "Sequence does not reach the required terminal outcome.", "Sekwencja nie osiąga wymaganego wyniku końcowego.", scenario.Fixture, outcomes.LastOrDefault())
+                : Fail("KG-RETRY-003", scenario, "Sequence does not reach the required terminal outcome.", "Sekwencja nie osiąga wymaganego wyniku końcowego.", scenario.Fixture)
         ];
     }
 }
@@ -252,13 +252,13 @@ internal sealed class UnresolvedStatusValidator : ScenarioValidatorBase
         [
             duplicateReferences.Length == 0
                 ? Pass("KG-STATUS-001", scenario, "No duplicate references were found.", "Nie znaleziono zduplikowanych referencji.", scenario.Fixture)
-                : Fail("KG-STATUS-001", scenario, "Duplicate references were found.", "Znaleziono zduplikowane referencje.", scenario.Fixture, string.Join(", ", duplicateReferences)),
+                : Fail("KG-STATUS-001", scenario, "Duplicate references were found.", "Znaleziono zduplikowane referencje.", scenario.Fixture, $"duplicate-reference-count={duplicateReferences.Length}"),
             contradictory.Length == 0
                 ? Pass("KG-STATUS-002", scenario, "No contradictory statuses were found.", "Nie znaleziono sprzecznych statusów.", scenario.Fixture)
-                : Fail("KG-STATUS-002", scenario, "Contradictory statuses were found for the same reference.", "Znaleziono sprzeczne statusy dla tej samej referencji.", scenario.Fixture, string.Join(", ", contradictory)),
+                : Fail("KG-STATUS-002", scenario, "Contradictory statuses were found for the same reference.", "Znaleziono sprzeczne statusy dla tej samej referencji.", scenario.Fixture, $"contradictory-reference-count={contradictory.Length}"),
             unresolved.Length == 0
                 ? Pass("KG-STATUS-003", scenario, "Every record has a terminal status declared by the pack.", "Każdy rekord ma status końcowy zadeklarowany w pakiecie.", scenario.Fixture)
-                : NeedsReview("KG-STATUS-003", scenario, "One or more records remain unresolved under the pack rules.", "Co najmniej jeden rekord pozostaje nierozstrzygnięty według reguł pakietu.", scenario.Fixture, string.Join(", ", unresolved))
+                : NeedsReview("KG-STATUS-003", scenario, "One or more records remain unresolved under the pack rules.", "Co najmniej jeden rekord pozostaje nierozstrzygnięty według reguł pakietu.", scenario.Fixture, $"unresolved-reference-count={unresolved.Length}")
         ];
     }
 
