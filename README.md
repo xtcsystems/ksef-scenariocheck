@@ -1,35 +1,43 @@
 # KSeF Guard
 
-Local deterministic KSeF 2.0 special-mode fixture and regression checks for developers and CI.
+KSeF Guard is being designed as a permanent free developer edition for local KSeF special-mode fixture and regression checks.
 
-> **Probe status:** This repository contains a bounded public-core market probe. The first functional release is under development on `probe/o-0001-public-core`.
+> **Current state:** architecture review. No supported release is available yet.
 
-KSeF Guard is an independent developer tool. It is not affiliated with or endorsed by the Polish Ministry of Finance or CIRFMF. It does not provide tax, accounting, legal or compliance advice and does not certify that an implementation complies with KSeF requirements.
+KSeF Guard is an independent product. It is not affiliated with or endorsed by the Polish Ministry of Finance or CIRFMF. It will not provide tax, accounting, legal or compliance advice and will not certify that an implementation complies with KSeF requirements.
 
-## Planned public/basic boundary
+## Intended free-edition job
 
-The probe will provide a local CLI for up to five synthetic fixture scenarios:
+The free edition should let a developer run a small, versioned set of local KSeF special-mode checks and obtain deterministic evidence suitable for local development or CI without transmitting production invoices or hosting customer data.
 
-- certificate metadata;
+Candidate scenario areas include:
+
+- certificate metadata and lifecycle assumptions;
 - QR verification-link inputs;
 - offline24 timelines;
-- retry/recovery sequences;
-- unresolved or contradictory statuses.
+- retry and recovery sequences;
+- unresolved or contradictory status evidence.
 
-It will produce deterministic JSON and HTML evidence reports without transmitting production invoices or hosting customer data.
+The exact architecture, runtime, distribution channels, license and scenario-pack model are under independent review and are not yet accepted.
 
-## Explicit exclusions
+## Long-term product model
 
-KSeF Guard is not:
+This repository is intended to remain the permanent public product, documentation and community surface.
+
+The free edition should remain genuinely useful. A future paid expansion, if justified by adoption, would focus on organization-scale automation, governance, maintained scenario content, integrations, evidence, hosted coordination or commercial support without replacing this public repository.
+
+## Explicit non-goals
+
+KSeF Guard is not intended to become:
 
 - a production KSeF gateway;
 - an invoicing or accounting application;
 - a tax/legal certification service;
-- a customer-specific ERP integration;
+- a customer-specific ERP integration consultancy;
 - a hosted store for invoices, certificates, keys, tokens or credentials.
 
-## License
+## Development status
 
-The public/basic probe will be released under the MIT License.
+A prior implementation attempt is preserved as an unaccepted spike and is not the architecture baseline. New implementation will begin only after independent architecture proposals, reconciliation and explicit approval.
 
-Implementation governance and probe metrics are maintained in [`xtcsystems/opportunity-radar`](https://github.com/xtcsystems/opportunity-radar).
+No installation instructions, package or release should be treated as supported until this README states otherwise.
