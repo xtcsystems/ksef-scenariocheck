@@ -1,64 +1,41 @@
-# KSeF Guard
 
-KSeF Guard is being designed as a permanent free developer edition for local KSeF special-mode fixture and regression checks.
+# KSeF ScenarioCheck
 
-> **Current state:** two independent architecture reports have been reconciled. The proposed architecture is awaiting explicit owner approval. No supported release is available and no implementation is authorized.
+KSeF ScenarioCheck is a local, deterministic developer tool for evaluating **synthetic** KSeF integration observations against source-grounded modeled scenarios.
 
-KSeF Guard is an independent product. It is not affiliated with or endorsed by the Polish Ministry of Finance or CIRFMF. It will not provide tax, accounting, legal or compliance advice and will not certify that an implementation complies with KSeF requirements.
+> **Development status:** the `offline24-timeline` vertical slice is under implementation. There is no supported public release yet.
 
-## Proposed free-edition job
+KSeF ScenarioCheck is independent. It is not affiliated with or endorsed by the Polish Ministry of Finance or CIRFMF. It does not provide tax, accounting, legal, or compliance advice and does not certify that an implementation complies with KSeF requirements.
 
-The proposed architecture would let a developer produce a normalized synthetic observation from their own KSeF integration test harness, evaluate it locally against a small source-grounded baseline, and obtain deterministic console and JSON evidence suitable for local development or single-repository CI.
+## Current slice
 
-The proposed first release is deliberately narrow:
+The first slice accepts a bounded JSON observation produced by a test harness, evaluates one modeled `offline24-timeline` scenario, and emits deterministic text and JSON evidence for local development or single-repository CI.
 
-- one `offline24-timeline` vertical slice;
-- one `retry-recovery-trace` family containing bounded retry, transition, terminal, duplicate, contradictory and unresolved-status assertions;
-- no direct KSeF or ERP driving;
-- no live environment execution;
-- no production invoice payloads, credentials, certificates or private keys;
-- no runtime telemetry.
+It deliberately does **not** contact KSeF, accept invoice XML, NIP values, credentials, tokens, certificates or private keys, drive an ERP/SDK/gateway, calculate Polish legal business days, return legal or tax conclusions, or collect telemetry.
 
-These decisions are proposals until owner approval.
+## Build and test
 
-## Long-term product model
+The repository pins .NET SDK `10.0.302`, targets `net10.0`, and has no third-party NuGet dependencies.
 
-This repository remains the intended permanent public product, documentation and community surface.
+```bash
+dotnet build tests/XtcSystems.KsefScenarioCheck.Tests/XtcSystems.KsefScenarioCheck.Tests.csproj -c Release
+dotnet run --project tests/XtcSystems.KsefScenarioCheck.Tests/XtcSystems.KsefScenarioCheck.Tests.csproj -c Release --no-build
+```
 
-The free edition should remain genuinely useful. Future paid expansion, if justified by adoption, may focus on faster and broader maintained content, compatibility matrices, organization governance, multi-repository orchestration, evidence retention, notifications, private content and commercial support.
+A local prerelease package can be built without publishing it:
 
-No private, hosted or paid infrastructure is authorized now.
+```bash
+dotnet pack src/XtcSystems.KsefScenarioCheck.Cli/XtcSystems.KsefScenarioCheck.Cli.csproj -c Release -o artifacts
+```
 
-## Proposed technical direction
+Example source run:
 
-Subject to owner approval:
+```bash
+dotnet run --project src/XtcSystems.KsefScenarioCheck.Cli -- run   --observation examples/observations/offline24.pass.json   --as-of 2026-09-01T00:00:00Z   --output report.json
+```
 
-- C# on the current supported .NET LTS target;
-- NuGet global tool and GitHub Releases;
-- tested GitHub Actions and Azure Pipelines YAML examples;
-- Apache-2.0;
-- JSON-only declarative non-executable scenario packs;
-- no initial GitHub Action wrapper, Azure DevOps task, container or hosted service;
-- official-primary-source provenance, freshness and freeze/archive metadata.
+The explicit `--as-of` value is part of the deterministic input. It prevents freshness state from depending on the machine clock.
 
-## Explicit non-goals
+The public code, schemas, examples and independently authored baseline content are Apache-2.0 licensed. Contributions use DCO sign-off. Security reports belong in GitHub's private vulnerability-reporting / Security Advisory channel; see [SECURITY.md](SECURITY.md).
 
-KSeF Guard is not intended to become:
-
-- a production KSeF gateway;
-- an invoicing or accounting application;
-- a tax/legal certification service;
-- a customer-specific ERP integration consultancy;
-- a hosted store for invoices, certificates, keys, tokens or credentials.
-
-## Development status
-
-A prior implementation attempt is preserved in closed PR #1 as an unaccepted spike. It was not used by either independent architect and is not the implementation baseline.
-
-New implementation will begin only after:
-
-1. explicit owner approval of the reconciled architecture;
-2. preparation of the official-source rule ledger and exact implementation/review handoffs;
-3. a second explicit owner decision authorizing Codex implementation.
-
-No installation instructions, package, license choice or release should be treated as supported until this README states otherwise.
+`retry-recovery-trace`, package publication, merge/release and observation remain outside this vertical slice.

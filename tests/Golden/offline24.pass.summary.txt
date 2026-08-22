@@ -1,0 +1,6 @@
+KSeF ScenarioCheck 0.1.0-alpha.1
+Result: PASS
+Scenario: offline24.explicit-window.v1
+Assertions: 7 passed, 0 failed, 0 need review
+Pack: baseline-pl 1.0.0 (sha256:2b9ec72f822a57eea1b3be1e89796d6a51738d0cf9a80639530f6a645d9584ad)
+Source: CIRFMF/ksef-api@1c34fe2799387d517b83a2fb21e31e83d5f66247

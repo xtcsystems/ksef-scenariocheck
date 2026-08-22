@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "profileId": "pl-ksef-api-te-v2.7.0-build-2.7.0-te-1c34fe279938",
+  "scenarioFamily": "offline24-timeline",
+  "scenarioId": "offline24.explicit-window.v1",
+  "observationId": "offline24-example",
+  "generatedAt": "2026-02-03T12:00:00Z",
+  "sourceSystem": {
+    "kind": "fixture-generator",
+    "version": "1.0.0"
+  },
+  "events": [
+    {
+      "id": "issue",
+      "kind": "invoice-issued",
+      "occurredAt": "2026-02-02T08:00:00Z",
+      "sequence": 1,
+      "reference": "syn:invoice-001",
+      "issueDate": "2026-02-02"
+    },
+    {
+      "id": "offline",
+      "kind": "offline-mode-declared",
+      "occurredAt": "2026-02-02T08:00:01Z",
+      "sequence": 2,
+      "reference": "syn:invoice-001",
+      "offlineMode": true
+    },
+    {
+      "id": "attempt",
+      "kind": "transmission-attempt",
+      "occurredAt": "2026-02-04T00:00:00Z",
+      "sequence": 3,
+      "reference": "syn:invoice-001",
+      "attempt": 1
+    }
+  ]
+}

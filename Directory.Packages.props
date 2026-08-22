@@ -1,0 +1,7 @@
+
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <!-- The vertical slice deliberately has no third-party NuGet dependencies. -->
+</Project>

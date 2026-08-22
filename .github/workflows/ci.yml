@@ -1,0 +1,37 @@
+
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build-test-pack:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.302
+      - name: Build
+        run: dotnet build tests/XtcSystems.KsefScenarioCheck.Tests/XtcSystems.KsefScenarioCheck.Tests.csproj -c Release
+      - name: Run tests
+        run: dotnet run --project tests/XtcSystems.KsefScenarioCheck.Tests/XtcSystems.KsefScenarioCheck.Tests.csproj -c Release --no-build
+      - name: Pack local prerelease tool
+        run: dotnet pack src/XtcSystems.KsefScenarioCheck.Cli/XtcSystems.KsefScenarioCheck.Cli.csproj -c Release -o artifacts
+      - name: Install exact local package
+        shell: bash
+        run: |
+          dotnet tool install --tool-path .tools --add-source artifacts XtcSystems.KsefScenarioCheck.Tool --version 0.1.0-alpha.1
+          echo "$PWD/.tools" >> "$GITHUB_PATH"
+      - name: Smoke test installed tool
+        shell: bash
+        run: |
+          ksef-scenariocheck run --observation examples/observations/offline24.pass.json --as-of 2026-09-01T00:00:00Z --output artifacts/smoke-report.json
+          test -s artifacts/smoke-report.json

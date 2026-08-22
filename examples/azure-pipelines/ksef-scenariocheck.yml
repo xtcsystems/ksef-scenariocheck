@@ -1,0 +1,11 @@
+
+trigger: none
+pool:
+  vmImage: ubuntu-latest
+steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: sdk
+      version: 10.0.302
+  - script: dotnet tool install --tool-path .tools XtcSystems.KsefScenarioCheck.Tool --version 0.1.0
+  - script: ./.tools/ksef-scenariocheck run --observation examples/observations/offline24.pass.json --as-of 2026-09-01T00:00:00Z --output $(Build.ArtifactStagingDirectory)/ksef-scenariocheck-report.json

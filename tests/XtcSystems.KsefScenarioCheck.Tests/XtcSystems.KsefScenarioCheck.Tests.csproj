@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>XtcSystems.KsefScenarioCheck.Tests</AssemblyName>
+    <RootNamespace>XtcSystems.KsefScenarioCheck.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/XtcSystems.KsefScenarioCheck.Core/XtcSystems.KsefScenarioCheck.Core.csproj" />
+    <ProjectReference Include="../../src/XtcSystems.KsefScenarioCheck.Cli/XtcSystems.KsefScenarioCheck.Cli.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../packs/**/*" Link="packs/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../schemas/*.json" Link="schemas/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../examples/observations/*.json" Link="examples/observations/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Fixtures/**/*" Link="Fixtures/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Golden/**/*" Link="Golden/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
