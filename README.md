@@ -1,4 +1,3 @@
-
 # KSeF ScenarioCheck
 
 KSeF ScenarioCheck is a local, deterministic developer tool for evaluating **synthetic** KSeF integration observations against source-grounded modeled scenarios.
@@ -15,7 +14,7 @@ It deliberately does **not** contact KSeF, accept invoice XML, NIP values, crede
 
 ## Build and test
 
-The repository pins .NET SDK `10.0.302`, targets `net10.0`, and has no third-party NuGet dependencies.
+The repository pins .NET SDK `10.0.400` with runtime `10.0.11`, targets `net10.0`, and has no third-party NuGet dependencies.
 
 ```bash
 dotnet build tests/XtcSystems.KsefScenarioCheck.Tests/XtcSystems.KsefScenarioCheck.Tests.csproj -c Release
@@ -31,7 +30,10 @@ dotnet pack src/XtcSystems.KsefScenarioCheck.Cli/XtcSystems.KsefScenarioCheck.Cl
 Example source run:
 
 ```bash
-dotnet run --project src/XtcSystems.KsefScenarioCheck.Cli -- run   --observation examples/observations/offline24.pass.json   --as-of 2026-09-01T00:00:00Z   --output report.json
+dotnet run --project src/XtcSystems.KsefScenarioCheck.Cli -- run \
+  --observation examples/observations/offline24.pass.json \
+  --as-of 2026-09-01T00:00:00Z \
+  --output report.json
 ```
 
 The explicit `--as-of` value is part of the deterministic input. It prevents freshness state from depending on the machine clock.

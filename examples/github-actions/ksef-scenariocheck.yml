@@ -1,4 +1,3 @@
-
 name: KSeF ScenarioCheck example
 on: [workflow_dispatch]
 permissions:
@@ -10,6 +9,6 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          dotnet-version: 10.0.302
+          dotnet-version: 10.0.400
       - run: dotnet tool install --tool-path .tools XtcSystems.KsefScenarioCheck.Tool --version 0.1.0
       - run: ./.tools/ksef-scenariocheck run --observation examples/observations/offline24.pass.json --as-of 2026-09-01T00:00:00Z --output ksef-scenariocheck-report.json
