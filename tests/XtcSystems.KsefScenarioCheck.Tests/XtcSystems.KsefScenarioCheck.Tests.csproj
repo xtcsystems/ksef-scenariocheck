@@ -4,6 +4,7 @@
     <AssemblyName>XtcSystems.KsefScenarioCheck.Tests</AssemblyName>
     <RootNamespace>XtcSystems.KsefScenarioCheck.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/XtcSystems.KsefScenarioCheck.Core/XtcSystems.KsefScenarioCheck.Core.csproj" />
@@ -13,7 +14,7 @@
     <None Include="../../packs/**/*" Link="packs/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../schemas/*.json" Link="schemas/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/observations/*.json" Link="examples/observations/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="Fixtures/**/*" Link="Fixtures/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="Golden/**/*" Link="Golden/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Fixtures/packs/unverified/pack.json" Link="Fixtures/packs/unverified/pack.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Golden/offline24.pass.summary.txt" Link="Golden/offline24.pass.summary.txt" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
