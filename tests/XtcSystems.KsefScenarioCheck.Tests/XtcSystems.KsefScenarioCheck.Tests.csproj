@@ -14,7 +14,7 @@
     <None Include="../../packs/**/*" Link="packs/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../schemas/*.json" Link="schemas/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../examples/observations/*.json" Link="examples/observations/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="Fixtures/packs/unverified/pack.json" Link="Fixtures/packs/unverified/pack.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="Golden/offline24.pass.summary.txt" Link="Golden/offline24.pass.summary.txt" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../Fixtures/packs/unverified/pack.json" Link="Fixtures/packs/unverified/pack.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../Golden/offline24.pass.summary.txt" Link="Golden/offline24.pass.summary.txt" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
