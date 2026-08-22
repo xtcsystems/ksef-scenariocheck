@@ -1,6 +1,7 @@
 using System.Buffers;
 using System.Security.Cryptography;
 using System.Text.Json;
+using XtcSystems.KsefScenarioCheck.Core.Contracts;
 
 namespace XtcSystems.KsefScenarioCheck.Core.Serialization;
 
