@@ -30,12 +30,10 @@
     <None Include="../../schemas/*.json"
           Link="schemas/%(Filename)%(Extension)"
           CopyToOutputDirectory="PreserveNewest"
-          Pack="true"
-          PackagePath="tools/net10.0/any/schemas/" />
+          CopyToPublishDirectory="PreserveNewest" />
     <None Include="../../packs/baseline-pl/pack.json"
           Link="packs/baseline-pl/pack.json"
           CopyToOutputDirectory="PreserveNewest"
-          Pack="true"
-          PackagePath="tools/net10.0/any/packs/baseline-pl/" />
+          CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
